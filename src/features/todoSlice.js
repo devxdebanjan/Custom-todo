@@ -1,5 +1,5 @@
 import {createSlice, nanoid } from '@reduxjs/toolkit';
-
+// we define the initial state of the tasks
 const initialState = {
     todos: [
       {
@@ -31,6 +31,7 @@ const initialState = {
     searchQuery: "",
   };
 
+// we create the slice and add all the actions
 const todosSlice = createSlice({
   name: "todos",
   initialState,
@@ -66,5 +67,6 @@ const todosSlice = createSlice({
   },
 });
 
+//now we export the actions
 export const { addTodo, toggleComplete, removeTodo, setFilter, setSearchQuery, reorderTodos } = todosSlice.actions;
 export default todosSlice.reducer;

@@ -12,7 +12,7 @@ function Addtodo() {
   const [date, setDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState("");
-
+  //using each of the functionality we want implement while adding a Task
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {

@@ -1,5 +1,3 @@
-import { useState } from 'react'
-import './App.css'
 import './components/addtodo'
 import Addtodo from './components/addtodo'
 import TodoList from './components/todoslist'
@@ -7,7 +5,6 @@ import Filter from './components/filter'
 import SearchBar from './components/searchBar'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>

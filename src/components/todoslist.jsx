@@ -7,12 +7,12 @@ import { Task } from "./draggable";
 const TodoList = () => {
   const { todos, filter, searchQuery } = useSelector((state) => state.todos);
   const dispatch = useDispatch();
-
+  //filtering the task in three categories: high, medium and low priority 
   const filteredTodosh = todos.filter((todo) => {
     if (!filter.toLowerCase().includes("all")) {
       if (filter.toLowerCase().includes("completed") && !todo.completed) return false;
       if (filter.toLowerCase().includes("incomplete") && todo.completed) return false;
-      const selectedFilters = filter.toLowerCase().split(" "); // Convert filter string to an array
+      const selectedFilters = filter.toLowerCase().split(" "); 
       if (!selectedFilters.includes(todo.category.toLowerCase())) return false;
     }
     if (todo.priority !== "H") {
@@ -25,7 +25,7 @@ const TodoList = () => {
     if (!filter.toLowerCase().includes("all")) {
       if (filter.toLowerCase().includes("completed") && !todo.completed) return false;
       if (filter.toLowerCase().includes("incomplete") && todo.completed) return false;
-      const selectedFilters = filter.toLowerCase().split(" "); // Convert filter string to an array
+      const selectedFilters = filter.toLowerCase().split(" "); 
       if (!selectedFilters.includes(todo.category.toLowerCase())) return false;
     }
     if (todo.priority !== "M") {
@@ -38,7 +38,7 @@ const TodoList = () => {
     if (!filter.toLowerCase().includes("all")) {
       if (filter.toLowerCase().includes("completed") && !todo.completed) return false;
       if (filter.toLowerCase().includes("incomplete") && todo.completed) return false;
-      const selectedFilters = filter.toLowerCase().split(" "); // Convert filter string to an array
+      const selectedFilters = filter.toLowerCase().split(" ");
       if (!selectedFilters.includes(todo.category.toLowerCase())) return false;
     }
     if (todo.priority !== "L") {
@@ -49,14 +49,11 @@ const TodoList = () => {
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
-    console.log(active.dueDate)
-    console.log(over.id)
     if (!over || active.id === over.id) {
-      console.log("no drop target or dropped on itself");
-      return; // No drop target or dropped on itself
+      return; 
     }
     
-    // Find which priority group the items belong to
+    // Finding which priority group the items belong to
     const findPriorityGroup = (id) => {
       const todo = todos.find(t => t.id === id);
       if (!todo) return null;
@@ -66,7 +63,7 @@ const TodoList = () => {
     const activePriority = findPriorityGroup(active.id);
     const overPriority = findPriorityGroup(over.id);
     
-    // Only reorder if within the same priority group
+    // Reordering if within the same priority group
     if (activePriority === overPriority) {
       const reorderWithinPriority = (items) => {
         const oldIndex = items.findIndex(item => item.id === active.id);
@@ -78,12 +75,12 @@ const TodoList = () => {
         return items;
       };
       
-      // Create a new array of all todos with the updated order
+      // Creating a new array of all todos with the updated order
       const updatedTodos = [...todos];
       const priorityTodos = updatedTodos.filter(todo => todo.priority === activePriority);
       const reorderedPriorityTodos = reorderWithinPriority(priorityTodos);
       
-      // Replace the old todos with the same priority with the reordered ones
+      // Replacing the old todos with the same priority with the reordered ones
       let currentIndex = 0;
       for (let i = 0; i < updatedTodos.length; i++) {
         if (updatedTodos[i].priority === activePriority) {
@@ -92,11 +89,11 @@ const TodoList = () => {
         }
       }
       
-      // Dispatch the reordered todos to the store
+      // Dispatching the reordered todos to the store
       dispatch(reorderTodos(updatedTodos));
     }
   };
-
+//Returning the sortable context and the sections of tasks of each priority here
   return (
     <DndContext 
       collisionDetection={closestCorners}

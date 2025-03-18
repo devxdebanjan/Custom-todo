@@ -19,12 +19,11 @@ const Filter = () => {
     }
 
     setSelectedFilters(updatedFilters);
-    dispatch(setFilter(updatedFilters.join(" "))); // Convert array to string
+    dispatch(setFilter(updatedFilters.join(" ")));
   };
 
   return (
     <div className="relative">
-      {/* Dropdown Button */}
       <button 
         onClick={() => setDropdownOpen(!dropdownOpen)} 
         className="border-2 px-4 py-2 rounded  cursor-pointer"
