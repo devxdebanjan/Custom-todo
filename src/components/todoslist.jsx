@@ -1,6 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { toggleComplete, removeTodo } from "../features/todoSlice";
 import { Delete } from "../icons/dustbin";
+import { DndContext, closestCorners} from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy, } from "@dnd-kit/sortable";
+import { Task } from "./draggable";
 
 const TodoList = () => {
   const { todos, filter, searchQuery } = useSelector((state) => state.todos);
@@ -46,123 +49,56 @@ const TodoList = () => {
   });
 
   return (
+    <DndContext collisionDetection={closestCorners}>
     <div className="p-4">
       <div className="grid grid-cols-[2.7fr_0.9fr_1fr] gap-2 mb-1 text-gray-500 font-bold">
         <div className="font text-lg ">High Priority</div>
         <div className="font text-lg text-left">Date</div>
         <div className="font text-lg">Category</div>
       </div>
+      <SortableContext items={filteredTodosh} strategy={verticalListSortingStrategy}>
       {filteredTodosh.map((todo) => (
-        <div
+        <Task
           key={todo.id}
-          className={`grid grid-cols-[0.2fr_2.8fr_1fr_1fr_auto] gap-2 mb-1 items-center`}
-        >
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => dispatch(toggleComplete(todo.id))}
-            className="rounded w-8 h-8 justify-self-center ml-4"
-          />
-
-          <span
-            className="font-bold text-lg rounded p-2 bg-red-300"
-          >
-            {todo.task}
-          </span>
-          <span
-            className="p-2 rounded font-bold text-lg bg-red-300"
-          >
-            {todo.dueDate}
-          </span>
-          <span
-            className="rounded font-bold text-lg p-2 bg-red-300"
-          >
-            {todo.category}
-          </span>
-
-          <button
-            onClick={() => dispatch(removeTodo(todo.id))}
-            className="bg-gray-300 text-gray-950 p-2 rounded cursor-pointer h-full"
-          >
-            <Delete />
-          </button>
-        </div>
+          id={todo.id}
+          task={todo.task}
+          completed={todo.completed}
+          dueDate={todo.dueDate}
+          category={todo.category}
+          color={"bg-red-300"}
+        />
       ))}
+      </SortableContext>
       <h3 className="font-bold text-lg  text-gray-500">Medium Priority</h3>
+      <SortableContext items={filteredTodosm} strategy={verticalListSortingStrategy}>
       {filteredTodosm.map((todo) => (
-        <div
+        <Task
           key={todo.id}
-          className={`grid grid-cols-[0.2fr_2.8fr_1fr_1fr_auto] gap-2 mb-1 items-center`}
-        >
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => dispatch(toggleComplete(todo.id))}
-            className="rounded w-8 h-8 justify-self-center ml-4"
-          />
-
-          <span
-            className="font-bold text-lg rounded p-2 bg-yellow-200"
-          >
-            {todo.task}
-          </span>
-          <span
-            className="p-2 rounded font-bold text-lg bg-yellow-200"
-          >
-            {todo.dueDate}
-          </span>
-          <span
-            className="rounded font-bold text-lg p-2 bg-yellow-200"
-          >
-            {todo.category}
-          </span>
-
-          <button
-            onClick={() => dispatch(removeTodo(todo.id))}
-            className="bg-gray-300 text-gray-950 p-2 rounded cursor-pointer h-full"
-          >
-            <Delete />
-          </button>
-        </div>
+          id={todo.id}
+          task={todo.task}
+          completed={todo.completed}
+          dueDate={todo.dueDate}
+          category={todo.category}
+          color={"bg-yellow-200"}
+        />
       ))}
+      </SortableContext>
       <h3 className="font-bold text-lg  text-gray-500">Low Priority</h3>
+      <SortableContext items={filteredTodosl} strategy={verticalListSortingStrategy}>
       {filteredTodosl.map((todo) => (
-        <div
+        <Task
           key={todo.id}
-          className={`grid grid-cols-[0.2fr_2.8fr_1fr_1fr_auto] gap-2 mb-1 items-center`}
-        >
-          <input
-            type="checkbox"
-            checked={todo.completed}
-            onChange={() => dispatch(toggleComplete(todo.id))}
-            className="rounded w-8 h-8 justify-self-center ml-4"
-          />
-
-          <span
-            className="font-bold text-lg rounded p-2 bg-green-200"
-          >
-            {todo.task}
-          </span>
-          <span
-            className="p-2 rounded font-bold text-lg bg-green-200"
-          >
-            {todo.dueDate}
-          </span>
-          <span
-            className="rounded font-bold text-lg p-2 bg-green-200"
-          >
-            {todo.category}
-          </span>
-
-          <button
-            onClick={() => dispatch(removeTodo(todo.id))}
-            className="bg-gray-300 text-gray-950 p-2 rounded cursor-pointer h-full"
-          >
-            <Delete />
-          </button>
-        </div>
+          id={todo.id}
+          task={todo.task}
+          completed={todo.completed}
+          dueDate={todo.dueDate}
+          category={todo.category}
+          color={"bg-green-200"}
+        />
       ))}
+      </SortableContext>
     </div>
+    </DndContext>
   );
 };
 

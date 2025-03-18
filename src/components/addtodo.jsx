@@ -31,7 +31,7 @@ function Addtodo() {
     setTask("");
     setSelectedPriority("");
     setCategory("");
-    setShowCalendar(!showCalendar);
+    setShowCalendar(false);
   };
 
   return (
