@@ -12,46 +12,59 @@ export const Task = ({ id, task, completed, dueDate, category, color}) => {
     transform: CSS.Transform.toString(transform),
   };
   const dispatch = useDispatch();
+  
+  const handleCheckboxChange = (e) => {
+    e.stopPropagation();
+    dispatch(toggleComplete(id));
+  };
+  
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    dispatch(removeTodo(id));
+  };
+  
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
       className={`grid grid-cols-[0.2fr_2.8fr_1fr_1fr_auto] gap-2 mb-1 items-center`}
     >
-      <input
-                  type="checkbox"
-                  checked={completed}
-                  onChange={() => dispatch(toggleComplete(id))}
-                  className="rounded w-8 h-8 justify-self-center ml-4"
-                />
+      <div className="justify-self-center ml-4">
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={handleCheckboxChange}
+          className="rounded w-8 h-8 cursor-pointer"
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
       
-                <span
-                  className={`font-bold text-lg rounded p-2 ${color}`}
-                >
-                  {task}
-                </span>
-                <span
-                  className={`p-2 rounded font-bold text-lg ${color}`}
-                >
-                  {dueDate}
-                </span>
-                <span
-                  className={`rounded font-bold text-lg p-2 ${color}`}
-                >
-                  {category}
-                </span>
+      <span
+        className={`font-bold text-lg rounded p-2 ${color}`}
+        {...attributes}
+        {...listeners}
+      >
+        {task}
+      </span>
       
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    dispatch(removeTodo(id));
-                  }}
-                  className="bg-gray-300 text-gray-950 p-2 rounded cursor-pointer h-full"
-                >
-                  <Delete />
-                </button>
+      <span
+        className={`p-2 rounded font-bold text-lg ${color}`}
+      >
+        {dueDate}
+      </span>
+      
+      <span
+        className={`rounded font-bold text-lg p-2 ${color}`}
+      >
+        {category}
+      </span>
+      
+      <button
+        onClick={handleDelete}
+        className="bg-gray-300 text-gray-950 p-2 rounded cursor-pointer h-full"
+      >
+        <Delete />
+      </button>
     </div>
   );
 };

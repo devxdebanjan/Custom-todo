@@ -60,8 +60,11 @@ const todosSlice = createSlice({
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
+    reorderTodos: (state, action) => {
+      state.todos = action.payload;
+    },
   },
 });
 
-export const { addTodo, toggleComplete, removeTodo, setFilter, setSearchQuery } = todosSlice.actions;
+export const { addTodo, toggleComplete, removeTodo, setFilter, setSearchQuery, reorderTodos } = todosSlice.actions;
 export default todosSlice.reducer;

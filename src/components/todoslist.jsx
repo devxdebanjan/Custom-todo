@@ -1,8 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
-import { toggleComplete, removeTodo } from "../features/todoSlice";
-import { Delete } from "../icons/dustbin";
+import { reorderTodos } from "../features/todoSlice";
 import { DndContext, closestCorners} from "@dnd-kit/core";
-import { SortableContext, verticalListSortingStrategy, } from "@dnd-kit/sortable";
+import { SortableContext, verticalListSortingStrategy, arrayMove } from "@dnd-kit/sortable";
 import { Task } from "./draggable";
 
 const TodoList = () => {
@@ -48,8 +47,61 @@ const TodoList = () => {
     return todo.task.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    console.log(active.dueDate)
+    console.log(over.id)
+    if (!over || active.id === over.id) {
+      console.log("no drop target or dropped on itself");
+      return; // No drop target or dropped on itself
+    }
+    
+    // Find which priority group the items belong to
+    const findPriorityGroup = (id) => {
+      const todo = todos.find(t => t.id === id);
+      if (!todo) return null;
+      return todo.priority;
+    };
+    
+    const activePriority = findPriorityGroup(active.id);
+    const overPriority = findPriorityGroup(over.id);
+    
+    // Only reorder if within the same priority group
+    if (activePriority === overPriority) {
+      const reorderWithinPriority = (items) => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+        
+        if (oldIndex !== -1 && newIndex !== -1) {
+          return arrayMove(items, oldIndex, newIndex);
+        }
+        return items;
+      };
+      
+      // Create a new array of all todos with the updated order
+      const updatedTodos = [...todos];
+      const priorityTodos = updatedTodos.filter(todo => todo.priority === activePriority);
+      const reorderedPriorityTodos = reorderWithinPriority(priorityTodos);
+      
+      // Replace the old todos with the same priority with the reordered ones
+      let currentIndex = 0;
+      for (let i = 0; i < updatedTodos.length; i++) {
+        if (updatedTodos[i].priority === activePriority) {
+          updatedTodos[i] = reorderedPriorityTodos[currentIndex];
+          currentIndex++;
+        }
+      }
+      
+      // Dispatch the reordered todos to the store
+      dispatch(reorderTodos(updatedTodos));
+    }
+  };
+
   return (
-    <DndContext collisionDetection={closestCorners}>
+    <DndContext 
+      collisionDetection={closestCorners}
+      onDragEnd={handleDragEnd}
+    >
     <div className="p-4">
       <div className="grid grid-cols-[2.7fr_0.9fr_1fr] gap-2 mb-1 text-gray-500 font-bold">
         <div className="font text-lg ">High Priority</div>
