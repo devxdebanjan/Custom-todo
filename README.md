@@ -1,6 +1,6 @@
 # A Task Management Application using React, Redux and Vite
 To run this App, make sure you already have Node Installed. Now simply clone this repo and run `npm i` in this root of this project directory.
-![Image](https://github.com/devxdebanjan/Task4/blob/main/ss1.png)
+![Image](https://raw.githubusercontent.com/devxdebanjan/Task4/refs/heads/main/ss1.png)
 ## Features:
 - Simple and Efficient UI-UX
 - Arrange your tasks according to their Priority
